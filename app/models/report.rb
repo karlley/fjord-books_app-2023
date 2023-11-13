@@ -19,4 +19,16 @@ class Report < ApplicationRecord
   def created_on
     created_at.to_date
   end
+
+  def create_mentions
+    pattern = %r{http://localhost:3000/reports/([0-9０-９]+)}
+    mention_target_ids = content.scan(pattern).map do |match|
+      match_value = match.first
+      converted_value = match_value&.tr('０-９', '0-9')&.to_i
+      converted_value || match_value
+    end.uniq
+    mention_target_ids.each do |target_id|
+      active_mentions.create(mention_target_id: target_id)
+    end
+  end
 end
