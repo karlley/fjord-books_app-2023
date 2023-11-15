@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_193350) do
     t.integer "mention_target_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["mention_source_id", "mention_target_id"], name: "index_mentions_on_mention_source_id_and_mention_target_id", unique: true
     t.index ["mention_source_id"], name: "index_mentions_on_mention_source_id"
     t.index ["mention_target_id"], name: "index_mentions_on_mention_target_id"
   end

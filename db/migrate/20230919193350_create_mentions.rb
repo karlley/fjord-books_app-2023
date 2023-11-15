@@ -6,5 +6,6 @@ class CreateMentions < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+    add_index :mentions, %i[mention_source_id mention_target_id], unique: true
   end
 end
