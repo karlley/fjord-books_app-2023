@@ -1,0 +1,12 @@
+<div class="mentions-container">
+  <strong><%= Mention.model_name.human %>:</strong>
+  <% if (mentions = mentions.order(:id).presence) %>
+    <ul>
+      <% mentions.each do |mention| %>
+        <li><strong><%= mention.title %></strong>からリンク</li>
+      <% end %>
+    </ul>
+  <% else %>
+    (<%= t('.no_mentions') %>)
+  <% end %>
+</div>

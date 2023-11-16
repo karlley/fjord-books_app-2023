@@ -6,14 +6,7 @@
 
 <%= render 'shared/comments', commentable: @report %>
 
-<div class="mentions-container">
-  <strong>言及:</strong>
-  <ul>
-  <% @mentions.each do |mention| %>
-    <li><strong><%= mention.title %></strong>からリンク</li>
-  <% end %>
-  </ul>
-</div>
+<%= render 'shared/mentions', mentions: @mentions %>
 
 <nav class="page-nav">
   <% if @report.editable?(current_user) %>
