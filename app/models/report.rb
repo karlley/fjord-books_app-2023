@@ -12,6 +12,9 @@ class Report < ApplicationRecord
   validates :title, presence: true
   validates :content, presence: true
 
+  after_create :create_mentions!
+  after_update :update_mentions!
+
   def editable?(target_user)
     user == target_user
   end
@@ -19,6 +22,8 @@ class Report < ApplicationRecord
   def created_on
     created_at.to_date
   end
+
+  private
 
   def extract_mention_target_ids
     pattern = %r{http://localhost:3000/reports/([0-9０-９]+)}
@@ -29,14 +34,14 @@ class Report < ApplicationRecord
     end.uniq
   end
 
-  def create_mentions
+  def create_mentions!
     create_mention_target_ids = extract_mention_target_ids
     create_mention_target_ids.each do |target_id|
-      active_mentions.create(mention_target_id: target_id)
+      active_mentions.create!(mention_target_id: target_id)
     end
   end
 
-  def update_mentions
+  def update_mentions!
     mention_target_ids = extract_mention_target_ids
     create_mention_target_ids = mention_target_ids - mentioning_report_ids
     delete_mention_target_ids = mentioning_report_ids - mention_target_ids
