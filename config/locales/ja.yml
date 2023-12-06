@@ -219,6 +219,7 @@ ja:
       no_comments: コメントはまだありません
     mentions:
       no_mentions: メンションはまだありません
+      mention_from: からリンク
 
   # devise-i18n-viewsをオーバーライド
   devise:

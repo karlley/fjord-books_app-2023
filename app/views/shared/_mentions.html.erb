@@ -3,7 +3,10 @@
   <% if (mentions = mentions.order(:id).presence) %>
     <ul>
       <% mentions.each do |mention| %>
-        <li><strong><%= mention.title %></strong>からリンク</li>
+        <li>
+          <%= link_to mention.title, report_path(mention), target:
+                "_blank" %> <%= t('.mention_from') %>
+        </li>
       <% end %>
     </ul>
   <% else %>
