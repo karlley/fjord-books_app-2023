@@ -26,11 +26,11 @@ class Report < ApplicationRecord
   private
 
   def extract_mention_target_ids
-    pattern = %r{http://localhost:3000/reports/([0-9０-９]+)}
-    content.scan(pattern).map do |match|
-      match_value = match.first
-      converted_value = match_value&.tr('０-９', '0-9')&.to_i
-      converted_value || match_value
+    url_regexp = %r{http://localhost:3000/reports/([0-9０-９]+)(?!.*?/edit)}
+    content.scan(url_regexp).map do |match|
+      report_id = match.first
+      numeric_report_id = report_id&.tr('０-９', '0-9')&.to_i
+      numeric_report_id || report_id
     end.uniq
   end
 
