@@ -13,6 +13,7 @@ class Report < ApplicationRecord
 
   validates :title, presence: true
   validates :content, presence: true
+  validate :valid_mention_target
 
   after_create :update_mentions!
   after_update :update_mentions!
@@ -49,5 +50,12 @@ class Report < ApplicationRecord
 
       obsolete_mentions.each(&:destroy!)
     end
+  end
+
+  def valid_mention_target
+    new_mention_ids = extract_mention_target_ids
+    return if Report.where(id: new_mention_ids).pluck(:id) == new_mention_ids
+
+    errors.add(:content, I18n.t('errors.messages.not_found', model: model_name.human))
   end
 end
