@@ -15,8 +15,7 @@ class Report < ApplicationRecord
   validates :content, presence: true
   validate :valid_mention_target
 
-  after_create :update_mentions!
-  after_update :update_mentions!
+  after_save :update_mentions!
 
   def editable?(target_user)
     user == target_user
@@ -43,13 +42,10 @@ class Report < ApplicationRecord
     obsolete_mention_ids = mentioning_report_ids - mention_target_ids
     obsolete_mentions = mentioners.where(mention_target_id: obsolete_mention_ids)
 
-    transaction do
-      new_mention_ids.each do |new_mention_id|
-        mentioners.create!(mention_target_id: new_mention_id)
-      end
-
-      obsolete_mentions.each(&:destroy!)
+    new_mention_ids.each do |new_mention_id|
+      mentioners.create!(mention_target_id: new_mention_id)
     end
+    obsolete_mentions.each(&:destroy!)
   end
 
   def valid_mention_target
