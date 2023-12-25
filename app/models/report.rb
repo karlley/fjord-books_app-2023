@@ -50,7 +50,9 @@ class Report < ApplicationRecord
 
   def valid_mention_target
     new_mention_ids = extract_mention_target_ids
-    return if Report.where(id: new_mention_ids).pluck(:id) == new_mention_ids
+    new_mention_set = Set.new(new_mention_ids)
+    existing_mention_set = Set.new(Report.where(id: new_mention_ids).pluck(:id))
+    return if existing_mention_set == new_mention_set
 
     errors.add(:content, I18n.t('errors.messages.not_found', model: model_name.human))
   end
