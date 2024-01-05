@@ -110,6 +110,7 @@ ja:
       too_long: は%{count}文字以内で入力してください
       too_short: は%{count}文字以上で入力してください
       wrong_length: は%{count}文字で入力してください
+      not_found: "で指定された%{model}が見つかりません"
     template:
       body: 次の項目を確認してください
       header: "%{model}に%{count}個のエラーが発生しました"
@@ -216,6 +217,10 @@ ja:
       create: コメントする
       delete: 削除
       no_comments: コメントはまだありません
+    mentions:
+      no_mentions: メンションはまだありません
+      mention_from: からリンク
+
   # devise-i18n-viewsをオーバーライド
   devise:
     registrations:

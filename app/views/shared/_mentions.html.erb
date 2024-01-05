@@ -1,0 +1,15 @@
+<div class="mentions-container">
+  <strong><%= Mention.model_name.human %>:</strong>
+  <% if (mentions = mentions.order(:id).presence) %>
+    <ul>
+      <% mentions.each do |mention| %>
+        <li>
+          <%= link_to mention.title, report_path(mention), target:
+                "_blank" %> <%= t('.mention_from') %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    (<%= t('.no_mentions') %>)
+  <% end %>
+</div>
