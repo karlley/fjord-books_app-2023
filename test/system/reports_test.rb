@@ -3,8 +3,10 @@
 require 'application_system_test_case'
 
 class ReportsTest < ApplicationSystemTestCase
+  fixtures :users
+
   setup do
-    @report = reports(:first_report)
+    @report = Report.create!(user: users(:alice), title: 'はじめての日報', content: '楽しく勉強できた！')
 
     visit root_url
     fill_in 'Eメール', with: 'alice@example.com'
@@ -16,8 +18,8 @@ class ReportsTest < ApplicationSystemTestCase
   test 'visiting the index' do
     visit reports_url
     assert_selector 'h1', text: '日報の一覧'
-    assert_selector "div#report_#{@report.id} p", text: @report.title
-    assert_selector "div#report_#{@report.id} p", text: @report.content
+    assert_selector "div#report_#{@report.id} p", text: 'はじめての日報'
+    assert_selector "div#report_#{@report.id} p", text: '楽しく勉強できた！'
     assert_selector "div#report_#{@report.id} p", text: @report.user.name_or_email
     assert_selector "div#report_#{@report.id} p", text: I18n.l(@report.created_on)
   end
