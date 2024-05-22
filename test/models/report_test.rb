@@ -18,18 +18,17 @@ class ReportTest < ActiveSupport::TestCase
 
   # created_on
   test '日付オブジェクトで日報の作成年月日のみを返す' do
-    assert_instance_of Date, @report.created_on
-    created_at = @report.created_at
-    expected_format = %r{\A#{created_at.year}/#{format('%02d', created_at.month)}/#{format('%02d', created_at.day)}\z}
-    formatted_date = I18n.l(@report.created_on)
-    assert_match expected_format, formatted_date
+    year_month_day = [2024, 1, 1]
+    @report.update!(created_at: Time.zone.local(*year_month_day))
+    expected_date = Date.new(*year_month_day)
+    assert_equal expected_date, @report.created_on
   end
 
   # save_mentions、日報作成、メンション作成
   test '本文にメンション対象の日報URLを含む日報を作成するとメンションが作成される' do
     assert_equal(0, @report.mentioned_reports.count)
 
-    mentioning_report = Report.create!(user_id: @report_author.id, title: 'mention to report', content:
+    mentioning_report = Report.create!(user: @report_author, title: 'mention to report', content:
       "http://localhost:3000/reports/#{@report.id}")
 
     assert_equal(1, @report.mentioned_reports.count)
